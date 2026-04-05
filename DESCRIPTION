@@ -12,10 +12,12 @@ Description: More about what it does (maybe more than one line).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Depends: 
+Imports: 
     e1071,
     glmnet,
     lightgbm,
     ranger,
-    xgboost
+    xgboost,
+Depends: knitr
 RoxygenNote: 7.3.2
+VignetteBuilder: knitr

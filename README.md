@@ -1,6 +1,6 @@
 # mlS3 
 
-R package `ml3` providing an S3 interface to Machine Learning packages: 
+R package `mlS3` providing an S3 interface to Machine Learning packages: 
 
 ```R
 library(mlS3)

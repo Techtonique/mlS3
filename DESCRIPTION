@@ -1,14 +1,13 @@
 Package: mlS3
 Type: Package
-Title: What the Package Does (Title Case)
+Title: S3 interface to a selected list of Machine Learning models
 Version: 0.1.0
 Authors@R: 
     person("T.", "Moudiki", 
            email = "thierry.moudiki@gmail.com",
            role = c("aut", "cre"))
 Maintainer: T. Moudiki <thierry.moudiki@gmail.com>
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
+Description: The package provides an S3 interface to a selected list of Machine Learning models.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

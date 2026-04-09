@@ -1,13 +1,13 @@
 Package: mlS3
 Type: Package
-Title: S3 interface to a selected list of Machine Learning models
+Title: Unified S3 interface to Machine Learning models
 Version: 0.1.0
 Authors@R: 
     person("T.", "Moudiki", 
            email = "thierry.moudiki@gmail.com",
            role = c("aut", "cre"))
 Maintainer: T. Moudiki <thierry.moudiki@gmail.com>
-Description: The package provides an S3 interface to a selected list of Machine Learning models.
+Description: The package provides a unified S3 interface to Machine Learning models.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -16,7 +16,7 @@ Imports:
     glmnet,
     lightgbm,
     ranger,
-    xgboost,
-Depends: knitr
+    xgboost
+Suggests: caret, knitr
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr

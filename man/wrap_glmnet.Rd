@@ -48,7 +48,7 @@ Multiclass (`family = "multinomial"`) is not yet supported.
 }
 \examples{
 \donttest{
-X <- as.matrix(iris[iris$Species != "virginica", 1:4])
+X <- iris[iris$Species != "virginica", 1:4]
 y <- droplevels(iris[iris$Species != "virginica", "Species"])
 mod <- wrap_glmnet(X, y, family = "binomial")
 predict(mod, newx = X, type = "class")

@@ -1,0 +1,274 @@
+---
+title: "Introduction to R package `mlS3` -- with caret"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to R package `mlS3`  -- with caret}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Model parameters available for `caret`: [https://topepo.github.io/caret/available-models.html](https://topepo.github.io/caret/available-models.html)
+
+# Regression
+
+```{r regression, fig.width=7}
+# Load required libraries
+library(mlS3)
+library(caret)  # Will be suggested, but needed for this example
+
+# ============================================================================
+# Regression with mtcars dataset
+# ============================================================================
+data(mtcars)
+
+# Prepare data
+X_reg <- mtcars[, -1]  # All except mpg
+y_reg <- mtcars$mpg     # Target variable
+
+# Split into train/test
+set.seed(123)
+idx_reg <- sample(nrow(X_reg), 0.7 * nrow(X_reg))
+X_reg_train <- X_reg[idx_reg, ]
+y_reg_train <- y_reg[idx_reg]
+X_reg_test <- X_reg[-idx_reg, ]
+y_reg_test <- y_reg[-idx_reg]
+
+# ----------------------------------------------------------------------------
+# Example 1: Random Forest with specific parameters
+# ----------------------------------------------------------------------------
+cat("\n=== Example 1: Random Forest Regression ===\n")
+
+mod_rf <- wrap_caret(X_reg_train, y_reg_train, 
+                     method = "rf", 
+                     mtry = 3)        # Number of variables sampled at each split
+
+print(mod_rf)
+
+# Predictions
+pred_rf <- predict(mod_rf, newx = X_reg_test)
+rmse_rf <- sqrt(mean((pred_rf - y_reg_test)^2))
+r2_rf <- 1 - sum((y_reg_test - pred_rf)^2) / sum((y_reg_test - mean(y_reg_test))^2)
+
+cat("RMSE:", round(rmse_rf, 3), "\n")
+cat("R-squared:", round(r2_rf, 3), "\n")
+
+# ----------------------------------------------------------------------------
+# Example 3: Support Vector Machine
+# ----------------------------------------------------------------------------
+cat("\n=== Example 3: SVM Regression ===\n")
+
+mod_svm <- wrap_caret(X_reg_train, y_reg_train,
+                      method = "svmRadial",
+                      sigma = 0.1,
+                      C = 1)
+
+print(mod_svm)
+
+pred_svm <- predict(mod_svm, newx = X_reg_test)
+rmse_svm <- sqrt(mean((pred_svm - y_reg_test)^2))
+r2_svm <- 1 - sum((y_reg_test - pred_svm)^2) / sum((y_reg_test - mean(y_reg_test))^2)
+
+cat("RMSE:", round(rmse_svm, 3), "\n")
+cat("R-squared:", round(r2_svm, 3), "\n")
+
+# ----------------------------------------------------------------------------
+# Example 4: Neural Network
+# ----------------------------------------------------------------------------
+cat("\n=== Example 4: Neural Network Regression ===\n")
+
+mod_nnet <- wrap_caret(X_reg_train, y_reg_train,
+                       method = "nnet",
+                       size = 5,      # Number of hidden units
+                       decay = 0.01)  # Weight decay
+
+print(mod_nnet)
+
+pred_nnet <- predict(mod_nnet, newx = X_reg_test)
+rmse_nnet <- sqrt(mean((pred_nnet - y_reg_test)^2))
+r2_nnet <- 1 - sum((y_reg_test - pred_nnet)^2) / sum((y_reg_test - mean(y_reg_test))^2)
+
+cat("RMSE:", round(rmse_nnet, 3), "\n")
+cat("R-squared:", round(r2_nnet, 3), "\n")
+
+# ----------------------------------------------------------------------------
+# Example 5: Compare all models
+# ----------------------------------------------------------------------------
+cat("\n=== Model Comparison ===\n")
+results_reg <- data.frame(
+  Model = c("Random Forest", "SVM", "Neural Network"),
+  RMSE = round(c(rmse_rf, rmse_svm, rmse_nnet), 3),
+  R2 = round(c(r2_rf, r2_svm, r2_nnet), 3)
+)
+print(results_reg)
+
+# Best model
+best_idx <- which.min(results_reg$RMSE)
+cat("\nBest model (lowest RMSE):", results_reg$Model[best_idx], "\n")
+```
+
+# Classification
+
+```{r classification, fig.width=7}
+# ============================================================================
+# Classification with iris dataset
+# ============================================================================
+data(iris)
+
+# ----------------------------------------------------------------------------
+# Example 1: Binary Classification (setosa vs versicolor)
+# ----------------------------------------------------------------------------
+cat("\n=== Example 1: Binary Classification ===\n")
+
+iris_bin <- iris[iris$Species != "virginica", ]
+X_bin <- iris_bin[, 1:4]
+y_bin <- droplevels(iris_bin$Species)
+
+# Split
+set.seed(123)
+idx_bin <- sample(nrow(X_bin), 0.7 * nrow(X_bin))
+X_bin_train <- X_bin[idx_bin, ]
+y_bin_train <- y_bin[idx_bin]
+X_bin_test <- X_bin[-idx_bin, ]
+y_bin_test <- y_bin[-idx_bin]
+
+# Random Forest
+mod_rf_bin <- wrap_caret(X_bin_train, y_bin_train,
+                         method = "rf",
+                         mtry = 2)
+
+print(mod_rf_bin)
+
+# Class predictions
+pred_rf_bin <- predict(mod_rf_bin, newx = X_bin_test, type = "class")
+acc_rf <- mean(pred_rf_bin == y_bin_test)
+
+# Probability predictions
+prob_rf_bin <- predict(mod_rf_bin, newx = X_bin_test, type = "prob")
+head(prob_rf_bin)
+
+cat("Accuracy:", round(acc_rf, 4), "\n")
+cat("Confusion Matrix:\n")
+print(table(Predicted = pred_rf_bin, Actual = y_bin_test))
+
+# ----------------------------------------------------------------------------
+# Example 2: Multiclass Classification (all species)
+# ----------------------------------------------------------------------------
+cat("\n=== Example 2: Multiclass Classification ===\n")
+
+X_multi <- iris[, 1:4]
+y_multi <- iris$Species
+
+# Split
+set.seed(123)
+idx_multi <- sample(nrow(X_multi), 0.7 * nrow(X_multi))
+X_multi_train <- X_multi[idx_multi, ]
+y_multi_train <- y_multi[idx_multi]
+X_multi_test <- X_multi[-idx_multi, ]
+y_multi_test <- y_multi[-idx_multi]
+
+# Random Forest
+mod_rf_multi <- wrap_caret(X_multi_train, y_multi_train,
+                           method = "rf",
+                           mtry = 2)
+
+pred_rf_multi <- predict(mod_rf_multi, newx = X_multi_test, type = "class")
+acc_rf_multi <- mean(pred_rf_multi == y_multi_test)
+cat("Random Forest Accuracy:", round(acc_rf_multi, 4), "\n")
+
+# ----------------------------------------------------------------------------
+# Example 3: Support Vector Machine (multiclass)
+# ----------------------------------------------------------------------------
+cat("\n=== Example 3: SVM Multiclass ===\n")
+
+mod_svm_multi <- wrap_caret(X_multi_train, y_multi_train,
+                            method = "svmRadial",
+                            sigma = 0.1,
+                            C = 10)
+
+pred_svm_multi <- predict(mod_svm_multi, newx = X_multi_test, type = "class")
+acc_svm_multi <- mean(pred_svm_multi == y_multi_test)
+cat("SVM Accuracy:", round(acc_svm_multi, 4), "\n")
+
+# Confusion Matrix
+cat("\nSVM Confusion Matrix:\n")
+print(table(Predicted = pred_svm_multi, Actual = y_multi_test))
+
+# ----------------------------------------------------------------------------
+# Example 4: K-Nearest Neighbors
+# ----------------------------------------------------------------------------
+cat("\n=== Example 4: KNN Classification ===\n")
+
+mod_knn <- wrap_caret(X_multi_train, y_multi_train,
+                      method = "knn",
+                      k = 5)
+
+pred_knn <- predict(mod_knn, newx = X_multi_test, type = "class")
+acc_knn <- mean(pred_knn == y_multi_test)
+cat("KNN Accuracy:", round(acc_knn, 4), "\n")
+
+# ----------------------------------------------------------------------------
+# Example 5: Linear Discriminant Analysis
+# ----------------------------------------------------------------------------
+cat("\n=== Example 5: LDA Classification ===\n")
+
+mod_lda <- wrap_caret(X_multi_train, y_multi_train,
+                      method = "lda")
+
+pred_lda <- predict(mod_lda, newx = X_multi_test, type = "class")
+acc_lda <- mean(pred_lda == y_multi_test)
+cat("LDA Accuracy:", round(acc_lda, 4), "\n")
+
+# Get posterior probabilities
+prob_lda <- predict(mod_lda, newx = X_multi_test, type = "prob")
+cat("\nSample probabilities (first 3 rows):\n")
+print(head(prob_lda, 3))
+
+# ----------------------------------------------------------------------------
+# Example 6: XGBoost via caret (multiclass)
+# ----------------------------------------------------------------------------
+cat("\n=== Example 6: XGBoost via caret ===\n")
+
+mod_xgb_caret <- wrap_caret(X_multi_train, y_multi_train,
+                            method = "xgbTree",
+                            nrounds = 50,
+                            max_depth = 3,
+                            eta = 0.3,
+                            gamma = 0,
+                            colsample_bytree = 0.8,
+                            min_child_weight = 1,
+                            subsample = 1)
+
+pred_xgb_caret <- predict(mod_xgb_caret, newx = X_multi_test, type = "class")
+acc_xgb_caret <- mean(pred_xgb_caret == y_multi_test)
+cat("XGBoost Accuracy:", round(acc_xgb_caret, 4), "\n")
+
+# ----------------------------------------------------------------------------
+# Example 7: Compare all classification models
+# ----------------------------------------------------------------------------
+cat("\n=== Model Comparison (Multiclass) ===\n")
+results_class <- data.frame(
+  Model = c("Random Forest", "SVM", "KNN", "LDA", "XGBoost"),
+  Accuracy = round(c(acc_rf_multi, acc_svm_multi, acc_knn, acc_lda, acc_xgb_caret), 4)
+)
+print(results_class[order(-results_class$Accuracy), ])
+
+# ----------------------------------------------------------------------------
+# Example 8: Advanced - Probability calibration check
+# ----------------------------------------------------------------------------
+cat("\n=== Probability Distributions (LDA) ===\n")
+
+# Get probabilities for all classes
+probs <- predict(mod_lda, newx = X_multi_test, type = "prob")
+
+# Show distribution of predicted probabilities for each class
+par(mfrow = c(1, 3))
+for (class_name in colnames(probs)) {
+  hist(probs[, class_name], 
+       main = paste("Probabilities for", class_name),
+       xlab = "Probability",
+       col = "lightblue",
+       breaks = 20)
+}
+```
+
+

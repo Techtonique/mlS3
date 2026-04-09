@@ -16,7 +16,7 @@
 #'   \item{objective}{The lightgbm objective string, stored at fit time.}
 #' @examples
 #' \donttest{
-#' X <- as.matrix(iris[, 1:4])
+#' X <- iris[, 1:4]
 #' y <- iris$Species
 #' mod <- wrap_lightgbm(X, y,
 #'   params = list(objective = "multiclass", num_class = 3, verbose = -1),

@@ -7,6 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# Classification
 
 ```{r fig.width=7}
 library(mlS3)
@@ -68,15 +69,18 @@ pred_multi_ranger <- predict(mod, newx = X_multi_test, type = "class")
 acc_ranger <- mean(pred_multi_ranger == y_multi_test)
 
 # svm
-mod <- wrap_svm(as.matrix(X_multi_train), y_multi_train, kernel = "radial")
-pred_multi_svm <- predict(mod, newx = as.matrix(X_multi_test), type = "class")
+mod <- wrap_svm(X_multi_train, y_multi_train, kernel = "radial")
+pred_multi_svm <- predict(mod, newx = X_multi_test, type = "class")
 acc_svm <- mean(pred_multi_svm == y_multi_test)
 
 cat("Accuracy (lightgbm): ", acc_lightgbm, "\n")
 cat("Accuracy (ranger): ", acc_ranger, "\n")
 cat("Accuracy (svm): ", acc_svm, "\n")
+```
 
+# Regression 
 
+```{r fig.width=7}
 # =============================================================================
 # Regression examples (mtcars)
 # =============================================================================
@@ -90,26 +94,26 @@ X_reg_train <- X_reg[idx_reg, ];  y_reg_train <- y_reg[idx_reg]
 X_reg_test  <- X_reg[-idx_reg, ]; y_reg_test  <- y_reg[-idx_reg]
 
 # xgboost
-mod <- wrap_xgboost(as.matrix(X_reg_train), y_reg_train,
+mod <- wrap_xgboost(X_reg_train, y_reg_train,
                     nrounds = 50, objective = "reg:squarederror", verbose = 0)
-pred_reg_xgboost <- predict(mod, newx = as.matrix(X_reg_test))
+pred_reg_xgboost <- predict(mod, newx = X_reg_test)
 rmse_xgboost <- sqrt(mean((pred_reg_xgboost - y_reg_test)^2))
 
 # lightgbm
-mod <- wrap_lightgbm(as.matrix(X_reg_train), y_reg_train,
+mod <- wrap_lightgbm(X_reg_train, y_reg_train,
                      params = list(objective = "regression", verbose = -1),
                      nrounds = 50)
-pred_reg_lightgbm <- predict(mod, newx = as.matrix(X_reg_test))
+pred_reg_lightgbm <- predict(mod, newx = X_reg_test)
 rmse_lightgbm <- sqrt(mean((pred_reg_lightgbm - y_reg_test)^2))
 
 # glmnet
-mod <- wrap_glmnet(as.matrix(X_reg_train), y_reg_train, alpha = 0)
-pred_reg_glmnet <- predict(mod, newx = as.matrix(X_reg_test))
+mod <- wrap_glmnet(X_reg_train, y_reg_train, alpha = 0)
+pred_reg_glmnet <- predict(mod, newx = X_reg_test)
 rmse_glmnet <- sqrt(mean((pred_reg_glmnet - y_reg_test)^2))
 
 # svm
-mod <- wrap_svm(as.matrix(X_reg_train), y_reg_train)
-pred_reg_svm <- predict(mod, newx = as.matrix(X_reg_test))
+mod <- wrap_svm(X_reg_train, y_reg_train)
+pred_reg_svm <- predict(mod, newx = X_reg_test)
 rmse_svm <- sqrt(mean((pred_reg_svm - y_reg_test)^2))
 
 # ranger

@@ -7,7 +7,7 @@ Authors@R:
            email = "thierry.moudiki@gmail.com",
            role = c("aut", "cre"))
 Maintainer: T. Moudiki <thierry.moudiki@gmail.com>
-Description: A unified S3 interface for machine learning models including glmnet, xgboost, lightgbm, ranger, etc.
+Description: A unified S3 interface for machine learning models including, among others, ensembles of decision trees and generalized linear models.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports:

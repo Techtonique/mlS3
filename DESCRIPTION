@@ -8,7 +8,7 @@ Authors@R:
            role = c("aut", "cre"))
 Maintainer: T. Moudiki <thierry.moudiki@gmail.com>
 Description: A unified S3 interface for machine learning models including, among others, ensembles of decision trees and generalized linear models.
-License: MIT + file LICENSE
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 Imports:
     e1071,

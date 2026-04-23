@@ -18,7 +18,8 @@ Imports:
     xgboost
 Suggests:
     caret,
-    knitr
+    knitr,
+    randomForest
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 Language: en-US

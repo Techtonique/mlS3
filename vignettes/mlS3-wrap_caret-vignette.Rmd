@@ -224,31 +224,12 @@ cat("\nSample probabilities (first 3 rows):\n")
 print(head(prob_lda, 3))
 
 # ----------------------------------------------------------------------------
-# Example 6: XGBoost via caret (multiclass)
-# ----------------------------------------------------------------------------
-cat("\n=== Example 6: XGBoost via caret ===\n")
-
-mod_xgb_caret <- wrap_caret(X_multi_train, y_multi_train,
-                            method = "xgbTree",
-                            nrounds = 50,
-                            max_depth = 3,
-                            eta = 0.3,
-                            gamma = 0,
-                            colsample_bytree = 0.8,
-                            min_child_weight = 1,
-                            subsample = 1)
-
-pred_xgb_caret <- predict(mod_xgb_caret, newx = X_multi_test, type = "class")
-acc_xgb_caret <- mean(pred_xgb_caret == y_multi_test)
-cat("XGBoost Accuracy:", round(acc_xgb_caret, 4), "\n")
-
-# ----------------------------------------------------------------------------
 # Example 7: Compare all classification models
 # ----------------------------------------------------------------------------
 cat("\n=== Model Comparison (Multiclass) ===\n")
 results_class <- data.frame(
-  Model = c("Random Forest", "SVM", "KNN", "LDA", "XGBoost"),
-  Accuracy = round(c(acc_rf_multi, acc_svm_multi, acc_knn, acc_lda, acc_xgb_caret), 4)
+  Model = c("Random Forest", "SVM", "KNN", "LDA"),
+  Accuracy = round(c(acc_rf_multi, acc_svm_multi, acc_knn, acc_lda), 4)
 )
 print(results_class[order(-results_class$Accuracy), ])
 

@@ -19,7 +19,8 @@ Imports:
 Suggests:
     caret,
     knitr,
-    randomForest
+    randomForest,
+    kernlab
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 Language: en-US

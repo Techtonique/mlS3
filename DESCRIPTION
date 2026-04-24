@@ -14,8 +14,7 @@ Imports:
     e1071,
     glmnet,
     lightgbm,
-    ranger,
-    xgboost
+    ranger
 Suggests:
     caret,
     knitr,

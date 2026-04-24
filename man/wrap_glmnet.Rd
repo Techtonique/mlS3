@@ -47,11 +47,18 @@ Multiclass (`family = "multinomial"`) is not yet supported.
   use [glmnet::cv.glmnet()] externally and pass `s = fit$lambda.min`.
 }
 \examples{
-\donttest{
+
 X <- iris[iris$Species != "virginica", 1:4]
 y <- droplevels(iris[iris$Species != "virginica", "Species"])
 mod <- wrap_glmnet(X, y, family = "binomial")
 predict(mod, newx = X, type = "class")
 predict(mod, newx = X, type = "prob")
-}
+
+
+X <- iris[iris$Species != "virginica", 1:4]
+y <- droplevels(iris[iris$Species != "virginica", "Species"])
+mod <- wrap_glmnet(X, y, family = "binomial")
+predict(mod, newx = X, type = "class")
+predict(mod, newx = X, type = "prob")
+
 }

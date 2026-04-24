@@ -40,11 +40,11 @@ Fits an `xgboost` model with a consistent interface.
 Supports binary classification, multiclass classification, and regression.
 }
 \examples{
-\donttest{
+
 X <- as.matrix(iris[iris$Species != "virginica", 1:4])
 y <- droplevels(iris[iris$Species != "virginica", "Species"])
 mod <- wrap_xgboost(X, y, nrounds = 50, objective = "binary:logistic", verbose = 0)
 predict(mod, newx = X, type = "class")
 predict(mod, newx = X, type = "prob")
-}
+
 }

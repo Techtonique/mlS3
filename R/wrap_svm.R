@@ -13,13 +13,13 @@
 #'   \item{levels}{Class levels (NULL for regression).}
 #'   \item{task}{"classification" or "regression".}
 #' @examples
-#' \donttest{
+#'
 #' X <- as.matrix(iris[, 1:4])
 #' y <- iris$Species
 #' mod <- wrap_svm(X, y, kernel = "radial")
 #' predict(mod, newx = X, type = "class")
 #' predict(mod, newx = X, type = "prob")
-#' }
+#'
 #' @export
 wrap_svm <- function(x, y, ...) {
   if (!requireNamespace("e1071", quietly = TRUE))
@@ -35,6 +35,15 @@ wrap_svm <- function(x, y, ...) {
 #' @param type `"class"` (default) for class labels, `"prob"` for a probability
 #'   matrix. Ignored for regression.
 #' @export
+#'
+#' @examples
+#'
+#' X <- as.matrix(iris[, 1:4])
+#' y <- iris$Species
+#' mod <- wrap_svm(X, y, kernel = "radial")
+#' predict(mod, newx = X, type = "class")
+#' predict(mod, newx = X, type = "prob")
+#'
 predict.wrap_svm <- function(object, newx, type = c("class", "prob"), ...) {
   newx <- as.matrix(newx)
   type <- match.arg(type)

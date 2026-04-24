@@ -14,13 +14,13 @@
 #'   \item{task}{"classification" or "regression".}
 #'   \item{objective}{The xgboost objective string, stored at fit time.}
 #' @examples
-#' \donttest{
+#'
 #' X <- as.matrix(iris[iris$Species != "virginica", 1:4])
 #' y <- droplevels(iris[iris$Species != "virginica", "Species"])
 #' mod <- wrap_xgboost(X, y, nrounds = 50, objective = "binary:logistic", verbose = 0)
 #' predict(mod, newx = X, type = "class")
 #' predict(mod, newx = X, type = "prob")
-#' }
+#'
 #' @export
 wrap_xgboost <- function(x, y, ...) {
   if (!requireNamespace("xgboost", quietly = TRUE))
@@ -38,6 +38,13 @@ wrap_xgboost <- function(x, y, ...) {
 #' @param type `"class"` (default) for class labels, `"prob"` for a probability
 #'   matrix. Ignored for regression.
 #' @export
+#'
+#' X <- as.matrix(iris[iris$Species != "virginica", 1:4])
+#' y <- droplevels(iris[iris$Species != "virginica", "Species"])
+#' mod <- wrap_xgboost(X, y, nrounds = 50, objective = "binary:logistic", verbose = 0)
+#' predict(mod, newx = X, type = "class")
+#' predict(mod, newx = X, type = "prob")
+#'
 predict.wrap_xgboost <- function(object, newx, type = c("class", "prob"), ...) {
   newx <- as.matrix(newx)
   raw  <- predict(object$fit, newx)

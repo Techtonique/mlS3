@@ -41,7 +41,9 @@ Fits a `lightgbm` model with a consistent interface.
 Supports binary classification, multiclass classification, and regression.
 }
 \examples{
-\donttest{
+
+library(mlS3)
+
 X <- iris[, 1:4]
 y <- iris$Species
 mod <- wrap_lightgbm(X, y,
@@ -49,5 +51,5 @@ mod <- wrap_lightgbm(X, y,
   nrounds = 50)
 predict(mod, newx = X, type = "class")
 predict(mod, newx = X, type = "prob")
-}
+
 }

@@ -10,14 +10,15 @@
 #'   \item{fit}{The fitted ranger model.}
 #'   \item{levels}{Class levels (NULL for regression).}
 #'   \item{task}{"classification" or "regression".}
+#'
 #' @examples
-#' \donttest{
+#'
 #' X <- as.matrix(iris[, 1:4])
 #' y <- iris$Species
 #' mod <- wrap_ranger(X, y, num.trees = 100L)
 #' predict(mod, newx = X, type = "class")
 #' predict(mod, newx = X, type = "prob")
-#' }
+#'
 #' @export
 wrap_ranger <- function(x, y, ...) {
   if (!requireNamespace("ranger", quietly = TRUE))
@@ -35,6 +36,15 @@ wrap_ranger <- function(x, y, ...) {
 #' @param type `"class"` (default) for class labels, `"prob"` for a probability
 #'   matrix. Ignored for regression.
 #' @export
+#'
+#' @examples
+#'
+#' X <- as.matrix(iris[, 1:4])
+#' y <- iris$Species
+#' mod <- wrap_ranger(X, y, num.trees = 100L)
+#' predict(mod, newx = X, type = "class")
+#' predict(mod, newx = X, type = "prob")
+#'
 predict.wrap_ranger <- function(object, newx, type = c("class", "prob"), ...) {
   newx <- .std_colnames(.coerce_newx(newx, "data.frame"))
   raw  <- predict(object$fit, data = newx)$predictions

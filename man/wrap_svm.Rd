@@ -39,11 +39,18 @@ Fits an `e1071` support vector machine with a consistent
 interface. Supports classification and regression.
 }
 \examples{
-\donttest{
+
 X <- as.matrix(iris[, 1:4])
 y <- iris$Species
 mod <- wrap_svm(X, y, kernel = "radial")
 predict(mod, newx = X, type = "class")
 predict(mod, newx = X, type = "prob")
-}
+
+
+X <- as.matrix(iris[, 1:4])
+y <- iris$Species
+mod <- wrap_svm(X, y, kernel = "radial")
+predict(mod, newx = X, type = "class")
+predict(mod, newx = X, type = "prob")
+
 }

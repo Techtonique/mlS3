@@ -37,11 +37,18 @@ Fits a `ranger` random forest with a consistent interface.
 Supports both classification (factor `y`) and regression (numeric `y`).
 }
 \examples{
-\donttest{
+
 X <- as.matrix(iris[, 1:4])
 y <- iris$Species
 mod <- wrap_ranger(X, y, num.trees = 100L)
 predict(mod, newx = X, type = "class")
 predict(mod, newx = X, type = "prob")
-}
+
+
+X <- as.matrix(iris[, 1:4])
+y <- iris$Species
+mod <- wrap_ranger(X, y, num.trees = 100L)
+predict(mod, newx = X, type = "class")
+predict(mod, newx = X, type = "prob")
+
 }

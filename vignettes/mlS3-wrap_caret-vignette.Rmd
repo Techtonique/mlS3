@@ -242,7 +242,8 @@ cat("\n=== Probability Distributions (LDA) ===\n")
 probs <- predict(mod_lda, newx = X_multi_test, type = "prob")
 
 # Show distribution of predicted probabilities for each class
-par(mfrow = c(1, 3))
+oldpar <- par(mfrow = c(1, 3))
+on.exit(par(oldpar))
 for (class_name in colnames(probs)) {
   hist(probs[, class_name], 
        main = paste("Probabilities for", class_name),

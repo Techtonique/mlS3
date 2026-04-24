@@ -23,9 +23,24 @@ Minimal wrapper around caret::train with no tuning.
 Hyperparameters can be passed via ... as named arguments.
 }
 \examples{
-\dontrun{
+
 # Only runs if caret is installed
+
+data(mtcars)
+
+# Prepare data
+X_reg <- mtcars[, -1]  # All except mpg
+y_reg <- mtcars$mpg     # Target variable
+
+# Split into train/test
+set.seed(123)
+idx_reg <- sample(nrow(X_reg), 0.7 * nrow(X_reg))
+X_train <- X_reg[idx_reg, ]
+y_train <- y_reg[idx_reg]
+X_test <- X_reg[-idx_reg, ]
+y_test <- y_reg[-idx_reg]
+
 mod <- wrap_caret(X_train, y_train, method = "rf", mtry = 3)
-pred <- predict(mod, newx = X_test)
-}
+(pred <- predict(mod, X_test))
+
 }

@@ -15,14 +15,15 @@
 #'   For lambda selection, a specific `s` value can be passed to `predict()`.
 #'   By default the midpoint of the lambda path is used. For optimal lambda,
 #'   use [glmnet::cv.glmnet()] externally and pass `s = fit$lambda.min`.
+#'
 #' @examples
-#' \donttest{
+#'
 #' X <- iris[iris$Species != "virginica", 1:4]
 #' y <- droplevels(iris[iris$Species != "virginica", "Species"])
 #' mod <- wrap_glmnet(X, y, family = "binomial")
 #' predict(mod, newx = X, type = "class")
 #' predict(mod, newx = X, type = "prob")
-#' }
+#'
 #' @export
 wrap_glmnet <- function(x, y, ...) {
   if (!requireNamespace("glmnet", quietly = TRUE))
@@ -40,6 +41,16 @@ wrap_glmnet <- function(x, y, ...) {
 #' @param s Lambda value for prediction. Defaults to the midpoint of the
 #'   lambda path. Pass `s = cv_fit$lambda.min` if using [glmnet::cv.glmnet()].
 #' @export
+#'
+#'
+#' @examples
+#'
+#' X <- iris[iris$Species != "virginica", 1:4]
+#' y <- droplevels(iris[iris$Species != "virginica", "Species"])
+#' mod <- wrap_glmnet(X, y, family = "binomial")
+#' predict(mod, newx = X, type = "class")
+#' predict(mod, newx = X, type = "prob")
+#'
 predict.wrap_glmnet <- function(object, newx, type = c("class", "prob"),
                                 s = NULL, ...) {
   newx <- as.matrix(newx)

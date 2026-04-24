@@ -15,7 +15,9 @@
 #'   \item{task}{"classification" or "regression".}
 #'   \item{objective}{The lightgbm objective string, stored at fit time.}
 #' @examples
-#' \donttest{
+#'
+#' library(mlS3)
+#'
 #' X <- iris[, 1:4]
 #' y <- iris$Species
 #' mod <- wrap_lightgbm(X, y,
@@ -23,7 +25,7 @@
 #'   nrounds = 50)
 #' predict(mod, newx = X, type = "class")
 #' predict(mod, newx = X, type = "prob")
-#' }
+#'
 #' @export
 wrap_lightgbm <- function(x, y, ...) {
   if (!requireNamespace("lightgbm", quietly = TRUE))
@@ -42,7 +44,19 @@ wrap_lightgbm <- function(x, y, ...) {
 #' @param newx A matrix or data.frame of new observations.
 #' @param type `"class"` (default) for class labels, `"prob"` for a probability
 #'   matrix. Ignored for regression.
+#'
 #' @export
+#'
+#' library(mlS3)
+#'
+#' X <- iris[, 1:4]
+#' y <- iris$Species
+#' mod <- wrap_lightgbm(X, y,
+#'   params = list(objective = "multiclass", num_class = 3, verbose = -1),
+#'   nrounds = 50)
+#' predict(mod, newx = X, type = "class")
+#' predict(mod, newx = X, type = "prob")
+#'
 predict.wrap_lightgbm <- function(object, newx, type = c("class", "prob"), ...) {
   newx <- as.matrix(newx)
   raw  <- predict(object$fit, newx)

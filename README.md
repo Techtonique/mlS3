@@ -6,9 +6,18 @@ R package `mlS3` providing an S3 interface to Machine Learning packages.
 
 ## Install 
 
+- From GitHub for the development version
+
 ```R
 remotes::install_github("Techtonique/mlS3")
 ```
+
+- From CRAN
+
+```R
+install.packages("mlS3")
+```
+
 
 ## Classification example
 

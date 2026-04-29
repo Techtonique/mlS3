@@ -41,18 +41,11 @@ y_bin_train <- y_bin[idx_bin]
 X_bin_test  <- X_bin[-idx_bin, ]
 y_bin_test  <- y_bin[-idx_bin]
 
-# xgboost
-mod <- wrap_xgboost(X_bin_train, y_bin_train,
-                    nrounds = 50, objective = "binary:logistic", verbose = 0)
-pred_bin_xgboost <- predict(mod, newx = X_bin_test, type = "class")
-acc_xgboost <- mean(pred_bin_xgboost == y_bin_test)
-
 # glmnet
 mod <- wrap_glmnet(X_bin_train, y_bin_train, family = "binomial")
 pred_bin_glmnet <- predict(mod, newx = X_bin_test, type = "class")
 acc_glmnet <- mean(pred_bin_glmnet == y_bin_test)
 
-cat("Accuracy (xgboost): ", acc_xgboost, "\n")
 cat("Accuracy (glmnet): ", acc_glmnet, "\n")
 
 
@@ -105,12 +98,6 @@ idx_reg <- sample(nrow(X_reg), 0.7 * nrow(X_reg))
 X_reg_train <- X_reg[idx_reg, ];  y_reg_train <- y_reg[idx_reg]
 X_reg_test  <- X_reg[-idx_reg, ]; y_reg_test  <- y_reg[-idx_reg]
 
-# xgboost
-mod <- wrap_xgboost(X_reg_train, y_reg_train,
-                    nrounds = 50, objective = "reg:squarederror", verbose = 0)
-pred_reg_xgboost <- predict(mod, newx = X_reg_test)
-rmse_xgboost <- sqrt(mean((pred_reg_xgboost - y_reg_test)^2))
-
 # lightgbm
 mod <- wrap_lightgbm(X_reg_train, y_reg_train,
                      params = list(objective = "regression", verbose = -1),
@@ -133,7 +120,6 @@ mod <- wrap_ranger(X_reg_train, y_reg_train, num.trees = 100L)
 pred_reg_ranger <- predict(mod, newx = X_reg_test)
 rmse_ranger <- sqrt(mean((pred_reg_ranger - y_reg_test)^2))
 
-cat("RMSE (xgboost): ", rmse_xgboost, "\n")
 cat("RMSE (lightgbm): ", rmse_lightgbm, "\n")
 cat("RMSE (glmnet): ", rmse_glmnet, "\n")
 cat("RMSE (svm): ", rmse_svm, "\n")

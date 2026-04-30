@@ -2,6 +2,8 @@
 
 R package `mlS3` providing an S3 interface to Machine Learning packages.
 
+[![](https://cranlogs.r-pkg.org/badges/mlS3)](https://cran.r-project.org/package=mlS3)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/mlS3)](https://cranlogs.r-pkg.org/badges/grand-total/mlS3)
 [![Documentation](https://img.shields.io/badge/documentation-is_here-green)](https://docs.techtonique.net/mlS3/index.html)
 
 ## Install 

@@ -3,7 +3,7 @@
 #' Minimal wrapper around caret::train with no tuning.
 #' Hyperparameters can be passed via ... as named arguments.
 #'
-#' @param X Feature matrix or data frame
+#' @param x Feature matrix or data frame
 #' @param y Response vector
 #' @param method caret model method (default "rf")
 #' @param ... Named hyperparameters (e.g., mtry = 3, ntree = 500)
@@ -32,7 +32,7 @@
 #' mod <- wrap_caret(X_train, y_train, method = "rf", mtry = 3)
 #' (pred <- predict(mod, X_test))
 #'
-wrap_caret <- function(X, y, method = "rf", ...) {
+wrap_caret <- function(x, y, method = "rf", ...) {
   # Check if caret is available - gives helpful error if not
   if (!requireNamespace("caret", quietly = TRUE)) {
     stop(
@@ -53,7 +53,7 @@ wrap_caret <- function(X, y, method = "rf", ...) {
   tuneGrid <- if (length(dots) > 0) as.data.frame(dots) else NULL
 
   # Combine X and y into a data.frame
-  df <- data.frame(X, y = y)
+  df <- data.frame(x, y = y)
 
   # Train the model
   mod <- caret::train(

@@ -4,10 +4,10 @@
 \alias{wrap_caret}
 \title{Wrap caret models for mlS3}
 \usage{
-wrap_caret(X, y, method = "rf", ...)
+wrap_caret(x, y, method = "rf", ...)
 }
 \arguments{
-\item{X}{Feature matrix or data frame}
+\item{x}{Feature matrix or data frame}
 
 \item{y}{Response vector}
 

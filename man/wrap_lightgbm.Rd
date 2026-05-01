@@ -52,4 +52,15 @@ mod <- wrap_lightgbm(X, y,
 predict(mod, newx = X, type = "class")
 predict(mod, newx = X, type = "prob")
 
+
+library(mlS3)
+
+X <- iris[, 1:4]
+y <- iris$Species
+mod <- wrap_lightgbm(X, y,
+  params = list(objective = "multiclass", num_class = 3, verbose = -1),
+  nrounds = 50)
+predict(mod, newx = X, type = "class")
+predict(mod, newx = X, type = "prob")
+
 }

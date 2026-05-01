@@ -47,6 +47,8 @@ wrap_lightgbm <- function(x, y, ...) {
 #'
 #' @export
 #'
+#' @examples
+#'
 #' library(mlS3)
 #'
 #' X <- iris[, 1:4]

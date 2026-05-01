@@ -1,7 +1,7 @@
 Package: mlS3
 Type: Package
 Title: Unified S3 Interface to Machine Learning Models
-Version: 0.1.0
+Version: 0.1.1
 Authors@R:
     person("T.", "Moudiki",
            email = "thierry.moudiki@gmail.com",
